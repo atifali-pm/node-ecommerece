@@ -1,10 +1,10 @@
-const express = require('express');
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const dotenv = require('dotenv');
-require('colors');
-const connectDb = require('./db/Database');
+import express from 'express';
+import colors from 'colors';
+import dotenv from 'dotenv';
+import morgan from 'morgan';
+import connectDb from "./config/db.js";
+import authRoutes from './routes/authRoute.js';
+import cors from 'cors'
 
 
 // dotenv config
@@ -17,12 +17,10 @@ const app = express();
 // middlewares
 app.use(cors())
 app.use(express.json())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
 app.use(morgan("dev"))
 
 //routes
-app.use("/api/v1/users", require("./routes/userRoute"));
+app.use("/api/v1/auth", authRoutes);
 // app.use("/api/v1/transactions", require("./routes/transactionRoute"));
 
 

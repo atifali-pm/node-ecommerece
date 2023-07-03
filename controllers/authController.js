@@ -1,8 +1,7 @@
-const userModel = require('../models/userModel')
-
+import userModel from "../models/userModel.js"
 
 // Login callback
-const loginController = async (req, res) => {
+export const login = async (req, res) => {
     try {
         const {email, password} = req.body
         console.log(req.body);
@@ -24,7 +23,7 @@ const loginController = async (req, res) => {
 }
 
 // Register callback
-const registerController = async (req, res) => {
+export const register = async (req, res) => {
     try {
         const newUser = new userModel(req.body)
         console.log(req.body);
@@ -40,5 +39,3 @@ const registerController = async (req, res) => {
         })
     }
 }
-
-module.exports = {loginController, registerController}
