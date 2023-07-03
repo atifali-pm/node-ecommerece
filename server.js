@@ -34,4 +34,7 @@ const PORT = process.env.PORT || 8080
 // listen
 app.listen(PORT, () => {
     console.log(`Server running on Port ${PORT}`)
+    // console.log(process.env.MAIL_USER)
+    // console.log(process.env.MAIL_PASS)
+
 })

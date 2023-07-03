@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
         email: {
             type: String,
             required: [true, 'Email is required and should be unique'],
-            unique: true
+            unique: true,
+            email: true,
         },
         password: {
             type: String,
@@ -30,6 +31,10 @@ const userSchema = new mongoose.Schema({
             type: Number,
             default: 0,
         },
+        email_verified: {
+            type: Number,
+            default: 0,
+        }
     },
     {
         timestamp: true
