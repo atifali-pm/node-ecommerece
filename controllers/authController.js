@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 import userModel from "../models/userModel.js"
 import transporter from "../config/emailTransporter.js"
 import nodemailer from "nodemailer";
+import  JWT  from "jsonwebtoken";
 
 import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 dotenv.config()
@@ -105,19 +106,53 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const {email, password} = req.body
-        console.log(req.body);
-        const user = await userModel.findOne({email, password})
-        if (!user) {
-            return res.status(404).send('User not found!')
+
+        if(!email || !password){
+            return res.status(404).send({
+                success: false,
+                message: "Invalid emaiil or password"
+            })
         }
 
-        return res.status(200).json({
-            success: true,
-            user
+        const user = await userModel.findOne({email})
+        if(!user){
+            return res.status(404).send({
+                success: false,
+                message: "Email is not registered"
+            })
+        }
+
+        const match = await comparePassword(password, user.password);
+
+        if(!match){
+            return res.status(404).send({
+                success: false,
+                message: "Invalid password"
+            })
+        }
+
+        const token = await JWT.sign({_id: user._id}, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRES, //"7d",
         });
+
+        res.status(200).send({
+            success: true,
+            message: "Login successfully",
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                address: user.address
+            },
+            token,
+        })
+        
     } catch (error) {
-        res.status(400).json({
+        console.log(error)
+        res.status(500).send({
             success: false,
+            message: "Error in login",
             error
         })
     }
