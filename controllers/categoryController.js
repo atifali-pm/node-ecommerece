@@ -1,8 +1,9 @@
 import categoryModel from "../models/categoryModel.js";
 import slugify from "slugify";
 
-export const createCategory = async (req, res) => {
+export const create = async (req, res) => {
     try {
+        console.log(req.body);
         const { name } = req.body;
 
         if (!name){
@@ -31,6 +32,6 @@ export const createCategory = async (req, res) => {
             success: false,
             error,
             message: "Error adding category"
-        });
+        });        
     }
 };
